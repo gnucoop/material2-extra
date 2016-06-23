@@ -1,0 +1,42 @@
+$md-calendar-row-height: 40px;
+$md-calendar-min-height: $md-calendar-row-height * 4;
+
+:host {
+  display: flex;
+
+  box-sizing: border-box;
+
+  width: 100%;
+  min-height: $md-calendar-min-height;
+
+  flex-direction: column;
+
+  md-calendar-header, md-calendar-row {
+    display: flex;
+    box-sizing: border-box;
+
+    width: 100%;
+    height: $md-calendar-row-height;
+
+    flex-direction: row;
+  }
+
+  md-calendar-header {
+    .md-calendar-header-title {
+      flex: 1;
+      margin: 0 10px;
+    }
+  }
+
+  md-calendar-row {
+    button, div {
+      flex: 1;
+      margin: 3px;
+    }
+
+    div {
+      line-height: $md-calendar-row-height;
+      text-align: center;
+    }
+  }
+}

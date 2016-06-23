@@ -1,0 +1,24 @@
+<md-calendar-header>
+    <button (click)="_prevPage()" md-mini-fab>&#8592;</button>
+    <button md-button class="md-calendar-header-title">
+        <template [ngIf]="viewMode == 'month'">
+            {{ _viewMoment.format('MMM YYYY') }}
+        </template>
+    </button>
+    <button (click)="_nextPage()" md-mini-fab>&#8594;</button>
+</md-calendar-header>
+<template [ngIf]="viewMode == 'year'"></template>
+<template [ngIf]="viewMode == 'month'">
+    <md-calendar-row>
+        <div *ngFor="let weekDay of _weekDays">
+            {{ weekDay }}
+        </div>
+    </md-calendar-row>
+    <md-calendar-row *ngFor="let week of _calendarRows">
+        <button
+                md-raised-button
+                [color]="day.selected ? 'warn' : null"
+                (click)="_selectDate(day)"
+                *ngFor="let day of week">{{ day.date.getDate() }}</button>
+    </md-calendar-row>
+</template>
