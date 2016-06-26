@@ -40,5 +40,8 @@ Properties:
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `selection-mode` | `"day"|"week"|"month"|"year"` | The range of dates selected when user clicks on a date
+| `selection-mode` | `"day" | "week" | "month" | "year"` | The range of dates selected when user clicks on a date
+| `view-date` | Date | The initial date displayed. Default to current date
+| `view-mode` | `"month" | "year" | "decade"` | The initial view mode. Default to `"month"`
+| `start-of-week-day` | `"monday" | "tuesday" | "wednesday" | "thursday" | "friday"| "satudary" | "sunday"` | The first day of week. Default to `"monday"`
 | `disabled` | boolean | Whether or not the button is disabled

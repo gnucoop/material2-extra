@@ -1,7 +1,7 @@
 {
   "name": "@material2-extra/calendar",
-  "version": "0.0.1",
-  "description": "Calendar widget build with Angular 2 Material",
+  "version": "0.0.3",
+  "description": "Calendar widget build on Angular 2 Material",
   "main": "./calendar.js",
   "typings": "./calendar.d.ts",
   "repository": {

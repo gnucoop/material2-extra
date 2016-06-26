@@ -1,24 +1,22 @@
 <md-calendar-header>
     <button (click)="_prevPage()" md-mini-fab>&#8592;</button>
-    <button md-button class="md-calendar-header-title">
-        <template [ngIf]="viewMode == 'month'">
-            {{ _viewMoment.format('MMM YYYY') }}
-        </template>
+    <button (click)="_previousViewMode()" md-button class="md-calendar-header-title">
+        {{ _viewHeader }}
     </button>
     <button (click)="_nextPage()" md-mini-fab>&#8594;</button>
 </md-calendar-header>
-<template [ngIf]="viewMode == 'year'"></template>
-<template [ngIf]="viewMode == 'month'">
-    <md-calendar-row>
-        <div *ngFor="let weekDay of _weekDays">
-            {{ weekDay }}
-        </div>
-    </md-calendar-row>
-    <md-calendar-row *ngFor="let week of _calendarRows">
-        <button
-                md-raised-button
-                [color]="day.selected ? 'warn' : null"
-                (click)="_selectDate(day)"
-                *ngFor="let day of week">{{ day.date.getDate() }}</button>
-    </md-calendar-row>
-</template>
+<md-calendar-row *ngIf="viewMode == 'month'">
+    <div *ngFor="let weekDay of _weekDays">
+        {{ weekDay }}
+    </div>
+</md-calendar-row>
+<md-calendar-row *ngFor="let row of _calendarRows">
+    <button
+            md-raised-button
+            [class.md-calendar-partial-selection]="entry.selected == 'partial'"
+            [color]="entry.selected != 'none' ? 'warn' : null"
+            (click)="_selectEntry(entry)"
+            *ngFor="let entry of row">
+        {{ entry.toString() }}
+    </button>
+</md-calendar-row>

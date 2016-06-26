@@ -1,5 +1,5 @@
 $md-calendar-row-height: 40px;
-$md-calendar-min-height: $md-calendar-row-height * 4;
+$md-calendar-height: $md-calendar-row-height * 8;
 
 :host {
   display: flex;
@@ -7,7 +7,7 @@ $md-calendar-min-height: $md-calendar-row-height * 4;
   box-sizing: border-box;
 
   width: 100%;
-  min-height: $md-calendar-min-height;
+  height: $md-calendar-height;
 
   flex-direction: column;
 
@@ -16,12 +16,13 @@ $md-calendar-min-height: $md-calendar-row-height * 4;
     box-sizing: border-box;
 
     width: 100%;
-    height: $md-calendar-row-height;
 
     flex-direction: row;
   }
 
   md-calendar-header {
+    height: $md-calendar-row-height;
+
     .md-calendar-header-title {
       flex: 1;
       margin: 0 10px;
@@ -29,6 +30,8 @@ $md-calendar-min-height: $md-calendar-row-height * 4;
   }
 
   md-calendar-row {
+    flex: 1;
+
     button, div {
       flex: 1;
       margin: 3px;
@@ -37,6 +40,18 @@ $md-calendar-min-height: $md-calendar-row-height * 4;
     div {
       line-height: $md-calendar-row-height;
       text-align: center;
+    }
+
+    .md-calendar-partial-selection {
+      :before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
     }
   }
 }
