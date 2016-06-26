@@ -15,3 +15,7 @@ You can see our [list of published packeges here](https://www.npmjs.com/~materia
 ```bash
 npm install --save @material2-extra/{calendar}
 ```
+
+## Preview
+
+You can see a [preview of Material 2 Extra components here](https://material2-extra.firebaseapp.com).

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { MdCalendar, MdCalendarPeriod } from '@material2-extra/calendar/calendar';
+import { Component, ViewChild } from '@angular/core';
+import {
+  MdCalendar, MdCalendarPeriodType, MdCalendarViewMode, MdCalendarWeekDay
+} from '@material2-extra/calendar/calendar';
 
 @Component({
   moduleId: module.id,
@@ -9,12 +11,39 @@ import { MdCalendar, MdCalendarPeriod } from '@material2-extra/calendar/calendar
   directives: [MdCalendar]
 })
 export class DemoApp {
-  testPeriod: MdCalendarPeriod = {
-    type: 'week',
-    startDate: new Date(2016, 5, 6),
-    endDate: new Date(2016, 5, 12)
-  };
+  @ViewChild(MdCalendar)
+  calendarComponent: MdCalendar;
 
   constructor() {
+  }
+
+  setSelectionMode(selMode: MdCalendarPeriodType): void {
+    if (this.calendarComponent == null) {
+      return;
+    }
+
+    if (this.calendarComponent.selectionMode != selMode) {
+      this.calendarComponent.selectionMode = selMode;
+    }
+  }
+
+  setViewMode(viewMode: MdCalendarViewMode): void {
+    if (this.calendarComponent == null) {
+      return;
+    }
+
+    if (this.calendarComponent.viewMode != viewMode) {
+      this.calendarComponent.viewMode = viewMode;
+    }
+  }
+
+  setFirstDayOfWeek(firstDayOfWeek: MdCalendarWeekDay): void {
+    if (this.calendarComponent == null) {
+      return;
+    }
+
+    if (this.calendarComponent.startOfWeekDay != firstDayOfWeek) {
+      this.calendarComponent.startOfWeekDay = firstDayOfWeek;
+    }
   }
 }
