@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "inlineSources": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "outDir": "../dist/e2e/",
+    "rootDir": ".",
+    "sourceMap": true,
+    "target": "es5"
+  },
+  "files": [
+    "e2e.d.ts"
+  ]
+}

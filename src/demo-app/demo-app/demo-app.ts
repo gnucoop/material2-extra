@@ -1,14 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import {
-  MdCalendar, MdCalendarPeriodType, MdCalendarViewMode, MdCalendarWeekDay
+  MdCalendar, MdCalendarPeriodType, MdCalendarViewMode, MdCalendarWeekDay,
+  MD_CALENDAR_DIRECTIVES
 } from '@material2-extra/calendar/calendar';
+import { MD_MASONRY_DIRECTIVES } from '@material2-extra/masonry/masonry';
 
 @Component({
   moduleId: module.id,
   selector: 'demo-app',
   templateUrl: 'demo-app.html',
   styleUrls: ['demo-app.css'],
-  directives: [MdCalendar]
+  directives: [MD_CALENDAR_DIRECTIVES, MD_MASONRY_DIRECTIVES]
 })
 export class DemoApp {
   @ViewChild(MdCalendar)

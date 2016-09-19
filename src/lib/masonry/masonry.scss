@@ -1,0 +1,20 @@
+md-masonry {
+  display: flex;
+  flex-direction: column;
+
+  md-masonry-row {
+    display: flex;
+    flex-direction: row;
+
+    md-masonry-item {
+      display: flex;
+      flex: 1;
+
+      &::after {
+        content: '';
+        display: block;
+        padding-bottom: 100%;
+      }
+    }
+  }
+}

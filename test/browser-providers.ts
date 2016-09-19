@@ -304,9 +304,9 @@ const sauceAliases: AliasMap = {
     return customLaunchers[item].base == 'SauceLabs';
   }),
   'DESKTOP': ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE', 'SL_SAFARI7',
-    'SL_SAFARI8', 'SL_SAFARI9'],
+              'SL_SAFARI8', 'SL_SAFARI9'],
   'MOBILE': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5',
-    'SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
+             'SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
   'ANDROID': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5'],
   'IE': ['SL_IE9', 'SL_IE10', 'SL_IE11'],
   'IOS': ['SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
@@ -322,7 +322,7 @@ const browserstackAliases: AliasMap = {
     return customLaunchers[item].base == 'BrowserStack';
   }),
   'DESKTOP': ['BS_CHROME', 'BS_FIREFOX', 'BS_IE9', 'BS_IE10', 'BS_IE11', 'BS_EDGE', 'BS_SAFARI7',
-    'BS_SAFARI8', 'BS_SAFARI9'],
+              'BS_SAFARI8', 'BS_SAFARI9'],
   'MOBILE': ['BS_ANDROID4.3', 'BS_ANDROID4.4', 'BS_IOS7', 'BS_IOS8', 'BS_IOS9', 'BS_WINDOWSPHONE'],
   'ANDROID': ['BS_ANDROID4.3', 'BS_ANDROID4.4'],
   'IE': ['BS_IE9', 'BS_IE10', 'BS_IE11'],

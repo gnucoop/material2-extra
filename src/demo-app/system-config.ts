@@ -5,7 +5,8 @@
 System.defaultJSExtensions = true;
 
 const components = [
-  'calendar'
+  'calendar',
+  'masonry'
 ];
 
 const map: any = {
@@ -15,6 +16,9 @@ components.forEach(name => map[`@material2-extra/${name}`] = `components/${name}
 
 /** User packages configuration. */
 const packages: any = {
+  '.': {
+    defaultExtension: 'js'
+  },
   'moment': {
     format: 'cjs',
     defaultExtension: 'js',
@@ -28,23 +32,34 @@ components.forEach(name => {
   };
 });
 
+const angularPackages = {
+  // Angular specific barrels.
+  '@angular/core': { main: 'bundles/core.umd.js'},
+  '@angular/core/testing': { main: '../bundles/core-testing.umd.js'},
+  '@angular/common': { main: 'bundles/common.umd.js'},
+  '@angular/compiler': { main: 'bundles/compiler.umd.js'},
+  '@angular/compiler/testing': { main: '../bundles/compiler-testing.umd.js'},
+  '@angular/http': { main: 'bundles/http.umd.js'},
+  '@angular/http/testing': { main: '../bundles/http-testing.umd.js'},
+  '@angular/forms': { main: 'bundles/forms.umd.js'},
+  '@angular/router': { main: 'bundles/router.umd.js'},
+  '@angular/platform-browser': { main: 'bundles/platform-browser.umd.js'},
+  '@angular/platform-browser/testing': { main: '../bundles/platform-browser-testing.umd.js'},
+  '@angular/platform-browser-dynamic': { main: 'bundles/platform-browser-dynamic.umd.js'},
+  '@angular/platform-browser-dynamic/testing': {
+    main: '../bundles/platform-browser-dynamic-testing.umd.js'
+  },
+  'moment': { main: 'min/moment.min.js' },
+  '@angular2-material/core': { main: 'core.umd.js' },
+  '@angular2-material/button': { main: 'button.umd.js' }
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /***********************************************************************************************
  * Everything underneath this line is managed by the CLI.
  **********************************************************************************************/
 const barrels: string[] = [
-  // Angular specific barrels.
-  '@angular/core',
-  '@angular/common',
-  '@angular/compiler',
-  '@angular/http',
-  '@angular/router',
-  '@angular/platform-browser',
-  '@angular/platform-browser-dynamic',
-  '@angular2-material/core',
-  '@angular2-material/button',
-
   // Thirdparty barrels.
   'rxjs',
   'moment',
@@ -55,7 +70,7 @@ const barrels: string[] = [
   /** @cli-barrel */
 ];
 
-const _cliSystemConfig = {};
+const _cliSystemConfig = angularPackages;
 barrels.forEach((barrelName: string) => {
   (<any> _cliSystemConfig)[barrelName] = { main: 'index' };
 });

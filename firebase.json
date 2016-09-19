@@ -1,5 +1,5 @@
 {
-  "firebase": "material2-extra",
+  "firebase": "material2-test",
   "public": "dist",
   "ignore": [
     "firebase.json",

@@ -12,14 +12,14 @@
 
     "number-leading-zero": "always",
     "number-no-trailing-zeros": true,
-    "number-zero-length-no-unit": true,
+    "length-zero-no-unit": true,
 
     "string-no-newline": true,
     "string-quotes": "single",
 
     "unit-case": "lower",
     "unit-no-unknown": true,
-    "unit-whitelist": ["px", "%", "deg", "ms", "em"],
+    "unit-whitelist": ["px", "%", "deg", "ms", "em", "vh"],
 
     "value-list-comma-space-after": "always-single-line",
     "value-list-comma-space-before": "never",
@@ -39,7 +39,6 @@
 
     "block-closing-brace-newline-after": "always",
     "block-closing-brace-newline-before": "always-multi-line",
-    "block-no-empty": true,
     "block-opening-brace-newline-after": "always-multi-line",
     "block-opening-brace-space-before": "always-multi-line",
 
