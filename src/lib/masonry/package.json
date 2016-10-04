@@ -1,6 +1,6 @@
 {
   "name": "@material2-extra/masonry",
-  "version": "0.0.16",
+  "version": "0.0.19",
   "description": "Masonry layout built on Angular 2 Material",
   "main": "./masonry.umd.js",
   "module": "./index.js",

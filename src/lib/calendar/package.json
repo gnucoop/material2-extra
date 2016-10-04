@@ -1,6 +1,6 @@
 {
   "name": "@material2-extra/calendar",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Calendar widget built on Angular 2 Material",
   "main": "./calendar.umd.js",
   "module": "./index.js",
