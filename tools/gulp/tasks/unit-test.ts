@@ -10,8 +10,14 @@ const runSequence = require('run-sequence');
 
 gulp.task(':build:test:vendor', function() {
   const npmVendorFiles = [
-    '@angular', '@angular2-material', 'core-js/client', 'hammerjs',
-    'moment', 'rxjs', 'systemjs/dist', 'zone.js/dist'
+    '@angular',
+    '@angular2-material',
+    'core-js/client',
+    'hammerjs',
+    'moment',
+    'rxjs',
+    'systemjs/dist',
+    'zone.js/dist'
   ];
 
   return gulpMerge(

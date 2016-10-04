@@ -25,6 +25,8 @@
       "../../node_modules/@types"
     ],
     "types": [
+      "hammerjs",
+      "moment"
     ]
   },
   "exclude": [

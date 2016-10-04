@@ -2,33 +2,33 @@
  * User Configuration.
  **********************************************************************************************/
 
-System.defaultJSExtensions = true;
-
 const components = [
   'calendar',
-  'masonry'
+  'masonry',
 ];
-
-const map: any = {
-};
-components.forEach(name => map[`@material2-extra/${name}`] = `components/${name}`);
 
 
 /** User packages configuration. */
 const packages: any = {
-  'moment': {
-    format: 'cjs',
-    defaultExtension: 'js',
-    main: 'min/moment.min'
+  // Set the default extension for the root package, because otherwise the demo-app can't
+  // be built within the production mode. Due to missing file extensions.
+  '.': {
+    defaultExtension: 'js'
   }
 };
 components.forEach(name => {
   packages[`@material2-extra/${name}`] = {
     format: 'cjs',
-    defaultExtension: 'js'
+    defaultExtension: 'js',
+    main: 'index'
   };
 });
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+/***********************************************************************************************
+ * Everything underneath this line is managed by the CLI.
+ **********************************************************************************************/
 const angularPackages = {
   // Angular specific barrels.
   '@angular/core': { main: 'bundles/core.umd.js'},
@@ -44,25 +44,17 @@ const angularPackages = {
   '@angular/platform-browser/testing': { main: '../bundles/platform-browser-testing.umd.js'},
   '@angular/platform-browser-dynamic': { main: 'bundles/platform-browser-dynamic.umd.js'},
   '@angular/platform-browser-dynamic/testing': {
-    main: '../bundles/platform-browser-dynamic-testing.umd.js',
+    main: '../bundles/platform-browser-dynamic-testing.umd.js'
   },
-  'moment': { main: 'min/moment.min.js' },
   '@angular2-material/core': { main: 'core.umd.js' },
-  '@angular2-material/button': { main: 'button.umd.js' }
+  '@angular2-material/button': { main: 'button.umd.js' },
 };
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-/***********************************************************************************************
- * Everything underneath this line is managed by the CLI.
- **********************************************************************************************/
 const barrels: string[] = [
   // Thirdparty barrels.
   'rxjs',
-  'moment',
 
   // App specific barrels.
-  'demo-app',
   ...components
   /** @cli-barrel */
 ];
@@ -80,12 +72,12 @@ System.config({
   map: {
     '@angular': 'vendor/@angular',
     '@angular2-material': 'vendor/@angular2-material',
-    'rxjs': 'vendor/rxjs',
     'moment': 'vendor/moment',
+    'rxjs': 'vendor/rxjs',
     'main': 'main.js'
   },
   packages: _cliSystemConfig
 });
 
 // Apply the user's configuration.
-System.config({ map, packages });
+System.config({ packages });

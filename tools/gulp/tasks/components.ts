@@ -63,10 +63,13 @@ task(':build:components:rollup', [':build:components:ts'], () => {
     'rxjs/add/operator/share': 'Rx.Observable.prototype',
     'rxjs/add/operator/finally': 'Rx.Observable.prototype',
     'rxjs/add/operator/catch': 'Rx.Observable.prototype',
-    'rxjs/Observable': 'Rx'
+    'rxjs/Observable': 'Rx',
+
+    '@angular/material': 'ng.material',
+    'moment': 'moment'
   };
   components.forEach(name => {
-    globals[`@material2-extra/${name}`] = `mde.${camelCase(name)}`
+    globals[`@material2-extra/${name}`] = `m2e.${camelCase(name)}`
   });
 
   // Build all of them asynchronously.
@@ -84,7 +87,7 @@ task(':build:components:rollup', [':build:components:ts'], () => {
       })
       .then((bundle: any) => {
         const result = bundle.generate({
-          moduleName: `mde.${camelCase(name)}`,
+          moduleName: `m2e.${camelCase(name)}`,
           format: 'umd',
           globals
         });

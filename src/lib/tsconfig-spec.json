@@ -25,7 +25,7 @@
       "../../node_modules/@types"
     ],
     "types": [
-      "jasmine"
+      "moment"
     ]
   },
   "angularCompilerOptions": {

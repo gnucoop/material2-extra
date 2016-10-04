@@ -13,9 +13,9 @@ import {
   NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
-import { MdButtonModule } from '@angular2-material/button';
+import { MdButtonModule } from '@angular/material';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import * as moment from 'moment';
 const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default || moment;
@@ -163,11 +163,80 @@ export class MdCalendar implements ControlValueAccessor {
     }
   }
 
+  public get calendarRows(): MdCalendarEntry[][] { return this._calendarRows; }
+  public get viewHeader(): string { return this._viewHeader; }
+  public get weekDays(): string[] { return this._weekDays; }
+
   private _calendarRows: MdCalendarEntry[][] = [];
   private _weekDays: string[] = [];
 
   constructor() {
     this._buildCalendar();
+  }
+
+  prevPage(): void {
+    if (this._viewMode == 'month') {
+      this.viewDate = momentConstructor(this.viewDate).subtract(1, 'M').toDate();
+    } else if (this._viewMode == 'year') {
+      this.viewDate = momentConstructor(this.viewDate).subtract(1, 'y').toDate();
+    }
+    this._buildCalendar();
+  }
+
+  nextPage(): void {
+    if (this._viewMode == 'month') {
+      this.viewDate = momentConstructor(this.viewDate).add(1, 'M').toDate();
+    } else if (this._viewMode == 'year') {
+      this.viewDate = momentConstructor(this.viewDate).add(1, 'y').toDate();
+    }
+    this._buildCalendar();
+  }
+
+  previousViewMode(): void {
+    if (this._viewMode == 'decade') {
+      return;
+    } else if (this._viewMode == 'year') {
+      this._viewMode = 'decade';
+    } else if (this._viewMode == 'month') {
+      this._viewMode = 'year';
+    }
+    this._buildCalendar();
+  }
+
+  selectEntry(entry: MdCalendarEntry): void {
+    if (!this._canSelectEntry(entry)) {
+      return this._nextViewMode(entry);
+    }
+
+    let newPeriod: MdCalendarPeriod;
+    if (this._isEntrySelected(entry) == 'full') {
+      newPeriod = null;
+    } else if (this._selectionMode == 'day') {
+      newPeriod = {
+        type: 'day',
+        startDate: entry.date,
+        endDate: entry.date
+      };
+    } else if (this._selectionMode == 'week') {
+      newPeriod = {
+        type: 'week',
+        startDate: new Date(momentConstructor(entry.date).startOf('week').toDate().valueOf()),
+        endDate: new Date(momentConstructor(entry.date).endOf('week').toDate().valueOf())
+      };
+    } else if (this._selectionMode == 'month') {
+      newPeriod = {
+        type: 'month',
+        startDate: new Date(momentConstructor(entry.date).startOf('month').toDate().valueOf()),
+        endDate: new Date(momentConstructor(entry.date).endOf('month').toDate().valueOf())
+      };
+    } else if (this._selectionMode == 'year') {
+      newPeriod = {
+        type: 'year',
+        startDate: new Date(momentConstructor(entry.date).startOf('year').toDate().valueOf()),
+        endDate: new Date(momentConstructor(entry.date).endOf('year').toDate().valueOf())
+      };
+    }
+    this.value = newPeriod;
   }
 
   registerOnChange(fn: (value: any) => void) {
@@ -299,32 +368,16 @@ export class MdCalendar implements ControlValueAccessor {
     this._weekDays = weekDayNames;
   }
 
-  private _prevPage(): void {
-    if (this._viewMode == 'month') {
-      this.viewDate = momentConstructor(this.viewDate).subtract(1, 'M').toDate();
-    } else if (this._viewMode == 'year') {
-      this.viewDate = momentConstructor(this.viewDate).subtract(1, 'y').toDate();
-    }
-    this._buildCalendar();
-  }
-
-  private _nextPage(): void {
-    if (this._viewMode == 'month') {
-      this.viewDate = momentConstructor(this.viewDate).add(1, 'M').toDate();
-    } else if (this._viewMode == 'year') {
-      this.viewDate = momentConstructor(this.viewDate).add(1, 'y').toDate();
-    }
-    this._buildCalendar();
-  }
-
   private _periodOrder(entryType: MdCalendarPeriodType): number {
     return ['day', 'week', 'month', 'year'].indexOf(entryType);
   }
 
   private _isEntrySelected(entry: MdCalendarEntry): MdCalendarEntrySelectedState {
     if (this._selectedPeriod != null) {
-      let selectionStart: moment.Moment = momentConstructor(this._selectedPeriod.startDate).startOf('day');
-      let selectionEnd: moment.Moment = momentConstructor(this._selectedPeriod.endDate).endOf('day');
+      let selectionStart: moment.Moment = momentConstructor(this._selectedPeriod.startDate)
+        .startOf('day');
+      let selectionEnd: moment.Moment = momentConstructor(this._selectedPeriod.endDate)
+        .endOf('day');
       let selectionPeriodOrder: number = this._periodOrder(this._selectedPeriod.type);
 
       let entryPeriodOrder: number = this._periodOrder(entry.type);
@@ -374,53 +427,6 @@ export class MdCalendar implements ControlValueAccessor {
     }
     this._viewDate = entry.date;
     this._buildCalendar();
-  }
-
-  private _previousViewMode(): void {
-    if (this._viewMode == 'decade') {
-      return;
-    } else if (this._viewMode == 'year') {
-      this._viewMode = 'decade';
-    } else if (this._viewMode == 'month') {
-      this._viewMode = 'year';
-    }
-    this._buildCalendar();
-  }
-
-  private _selectEntry(entry: MdCalendarEntry): void {
-    if (!this._canSelectEntry(entry)) {
-      return this._nextViewMode(entry);
-    }
-
-    let newPeriod: MdCalendarPeriod;
-    if (this._isEntrySelected(entry) == 'full') {
-      newPeriod = null;
-    } else if (this._selectionMode == 'day') {
-      newPeriod = {
-        type: 'day',
-        startDate: entry.date,
-        endDate: entry.date
-      };
-    } else if (this._selectionMode == 'week') {
-      newPeriod = {
-        type: 'week',
-        startDate: new Date(momentConstructor(entry.date).startOf('week').toDate().valueOf()),
-        endDate: new Date(momentConstructor(entry.date).endOf('week').toDate().valueOf())
-      };
-    } else if (this._selectionMode == 'month') {
-      newPeriod = {
-        type: 'month',
-        startDate: new Date(momentConstructor(entry.date).startOf('month').toDate().valueOf()),
-        endDate: new Date(momentConstructor(entry.date).endOf('month').toDate().valueOf())
-      };
-    } else if (this._selectionMode == 'year') {
-      newPeriod = {
-        type: 'year',
-        startDate: new Date(momentConstructor(entry.date).startOf('year').toDate().valueOf()),
-        endDate: new Date(momentConstructor(entry.date).endOf('year').toDate().valueOf())
-      };
-    }
-    this.value = newPeriod;
   }
 }
 

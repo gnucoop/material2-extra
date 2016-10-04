@@ -8,6 +8,13 @@ export const DIST_COMPONENTS_ROOT = join(DIST_ROOT, '@material2-extra');
 
 
 export const NPM_VENDOR_FILES = [
-  '@angular', '@angular2-material', 'core-js/client', 'hammerjs',
-  'moment', 'rxjs', 'systemjs/dist', 'zone.js/dist'
+  '@angular',
+  '@angular2-material',
+  'core-js/client',
+  'hammerjs',
+  'ionic-angular',
+  'moment',
+  'rxjs',
+  'systemjs/dist',
+  'zone.js/dist'
 ];

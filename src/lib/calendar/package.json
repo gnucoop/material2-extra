@@ -1,8 +1,9 @@
 {
   "name": "@material2-extra/calendar",
-  "version": "0.0.14",
+  "version": "0.0.18",
   "description": "Calendar widget built on Angular 2 Material",
-  "main": "./calendar.js",
+  "main": "./calendar.umd.js",
+  "module": "./index.js",
   "typings": "./calendar.d.ts",
   "repository": {
     "type": "git",
@@ -22,8 +23,7 @@
   },
   "homepage": "https://github.com/gnucoop/material2-extra#readme",
   "peerDependencies": {
-    "@angular2-material/core": "2.0.0-alpha.8-2",
-    "@angular2-material/button": "2.0.0-alpha.8-2",
+    "@angular/material": "^2.0.0-alpha.9-3",
     "moment": "^2.15.0"
   }
 }

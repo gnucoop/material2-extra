@@ -1,8 +1,9 @@
 {
   "name": "@material2-extra/masonry",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "description": "Masonry layout built on Angular 2 Material",
-  "main": "./masonry.js",
+  "main": "./masonry.umd.js",
+  "module": "./index.js",
   "typings": "./masonry.d.ts",
   "repository": {
     "type": "git",
@@ -21,6 +22,6 @@
   },
   "homepage": "https://github.com/gnucoop/material2-extra#readme",
   "peerDependencies": {
-    "@angular2-material/core": "2.0.0-alpha.8-2"
+    "@angular2-material/core": "^2.0.0-alpha.9-3"
   }
 }
