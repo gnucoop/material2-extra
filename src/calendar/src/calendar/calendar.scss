@@ -1,5 +1,5 @@
-$md-calendar-row-height: 40px;
-$md-calendar-height: $md-calendar-row-height * 8;
+$mde-calendar-row-height: 40px;
+$mde-calendar-height: $mde-calendar-row-height * 8;
 
 :host {
   display: flex;
@@ -7,11 +7,11 @@ $md-calendar-height: $md-calendar-row-height * 8;
   box-sizing: border-box;
 
   width: 100%;
-  height: $md-calendar-height;
+  height: $mde-calendar-height;
 
   flex-direction: column;
 
-  .md-calendar-header, .md-calendar-row {
+  .mde-calendar-header, .mde-calendar-row {
     display: flex;
     box-sizing: border-box;
 
@@ -20,16 +20,16 @@ $md-calendar-height: $md-calendar-row-height * 8;
     flex-direction: row;
   }
 
-  .md-calendar-header {
-    height: $md-calendar-row-height;
+  .mde-calendar-header {
+    height: $mde-calendar-row-height;
 
-    .md-calendar-header-title {
+    .mde-calendar-header-title {
       flex: 1;
       margin: 0 10px;
     }
   }
 
-  .md-calendar-row {
+  .mde-calendar-row {
     flex: 1;
 
     button, div {
@@ -38,11 +38,11 @@ $md-calendar-height: $md-calendar-row-height * 8;
     }
 
     div {
-      line-height: $md-calendar-row-height;
+      line-height: $mde-calendar-row-height;
       text-align: center;
     }
 
-    .md-calendar-partial-selection {
+    .mde-calendar-partial-selection {
       ::before {
         content: '';
         position: absolute;

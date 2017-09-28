@@ -2,18 +2,18 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
-import { MdMasonry, MdMasonryItem, MdMasonryRow } from './masonry/index';
+import { MdeMasonry, MdeMasonryItem, MdeMasonryRow } from './masonry/index';
 
 
 @NgModule({
   imports: [CommonModule],
-  exports: [MdMasonry, MdMasonryItem, MdMasonryRow],
-  declarations: [MdMasonry, MdMasonryItem, MdMasonryRow],
+  exports: [MdeMasonry, MdeMasonryItem, MdeMasonryRow],
+  declarations: [MdeMasonry, MdeMasonryItem, MdeMasonryRow],
 })
-export class MdMasonryModule {
+export class MdeMasonryModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: MdMasonryModule,
+      ngModule: MdeMasonryModule,
       providers: []
     };
   }

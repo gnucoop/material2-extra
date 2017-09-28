@@ -8,8 +8,8 @@ import {
   MdButtonModule, MdIconModule, MdListModule, MdSidenavModule, MdToolbarModule
 } from '@angular/material';
 
-import { MdCalendarModule } from '@material2-extra/calendar';
-import { MdMasonryModule } from '@material2-extra/masonry';
+import { MdeCalendarModule } from '@material2-extra/calendar';
+import { MdeMasonryModule } from '@material2-extra/masonry';
 
 import { DEMO_APP_ROUTES } from './demo-app/routes';
 import { DemoApp, Home } from './demo-app/demo-app';
@@ -31,8 +31,8 @@ import { MasonryDemo } from './masonry/masonry-demo';
     MdSidenavModule,
     MdToolbarModule,
 
-    MdCalendarModule,
-    MdMasonryModule
+    MdeCalendarModule,
+    MdeMasonryModule
   ],
   declarations: [
     DemoApp,

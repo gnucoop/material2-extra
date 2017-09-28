@@ -3,19 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { MdButtonModule } from '@angular/material';
 
-import { MdCalendar } from './calendar/index';
+import { MdeCalendar } from './calendar/index';
 
 
 @NgModule({
   imports: [CommonModule, MdButtonModule],
-  exports: [MdCalendar],
-  declarations: [MdCalendar],
+  exports: [MdeCalendar],
+  declarations: [MdeCalendar],
   providers: []
 })
-export class MdCalendarModule {
+export class MdeCalendarModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: MdCalendarModule,
+      ngModule: MdeCalendarModule,
       providers: []
     };
   }

@@ -3,37 +3,37 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { MdCalendar, MdCalendarPeriod } from '../src/calendar/index';
-import { MdCalendarModule } from '../src/calendar_module';
+import { MdeCalendar, MdeCalendarPeriod } from '../src/calendar/index';
+import { MdeCalendarModule } from '../src/calendar_module';
 
 import * as moment from 'moment';
 
 
-describe('MdCalendar', () => {
+describe('MdeCalendar', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MdCalendarModule],
-      declarations: [MdCalendarBasicTestComponent, MdCalendarMonthViewTestComponent]
+      imports: [FormsModule, ReactiveFormsModule, MdeCalendarModule],
+      declarations: [MdeCalendarBasicTestComponent, MdeCalendarMonthViewTestComponent]
     });
     TestBed.compileComponents();
   }));
 
   describe('basic behaviors', () => {
     it('creates an action header and entry rows', () => {
-      let fixture = TestBed.createComponent(MdCalendarBasicTestComponent);
+      let fixture = TestBed.createComponent(MdeCalendarBasicTestComponent);
       fixture.detectChanges();
 
-      let calendarItem = fixture.debugElement.query(By.directive(MdCalendar));
-      expect(calendarItem.query(By.css('.md-calendar-header'))).toBeTruthy();
-      expect(calendarItem.query(By.css('.md-calendar-row'))).toBeTruthy();
+      let calendarItem = fixture.debugElement.query(By.directive(MdeCalendar));
+      expect(calendarItem.query(By.css('.mde-calendar-header'))).toBeTruthy();
+      expect(calendarItem.query(By.css('.mde-calendar-row'))).toBeTruthy();
     });
 
     it('should display the current month', () => {
-      let fixture = TestBed.createComponent(MdCalendarBasicTestComponent);
+      let fixture = TestBed.createComponent(MdeCalendarBasicTestComponent);
       fixture.detectChanges();
 
-      let calendarItem = fixture.debugElement.query(By.directive(MdCalendar));
-      let calendarRows = calendarItem.queryAll(By.css('.md-calendar-row'));
+      let calendarItem = fixture.debugElement.query(By.directive(MdeCalendar));
+      let calendarRows = calendarItem.queryAll(By.css('.mde-calendar-row'));
 
       let startDate = moment().startOf('month').startOf('week');
       let endDate = moment().endOf('month').endOf('week').add(1, 'day');
@@ -64,14 +64,14 @@ describe('MdCalendar', () => {
     });
 
     it('supports ngModel', (done: () => void) => {
-      let fixture = TestBed.createComponent(MdCalendarBasicTestComponent);
+      let fixture = TestBed.createComponent(MdeCalendarBasicTestComponent);
       fixture.detectChanges();
 
       let instance = fixture.componentInstance;
-      let component = fixture.debugElement.query(By.directive(MdCalendar)).componentInstance;
+      let component = fixture.debugElement.query(By.directive(MdeCalendar)).componentInstance;
 
       let curDate = new Date();
-      instance.model = <MdCalendarPeriod>{
+      instance.model = <MdeCalendarPeriod>{
         type: 'day',
         startDate: curDate,
         endDate: curDate
@@ -88,7 +88,7 @@ describe('MdCalendar', () => {
           .toEqual(curDate.getDate());
 
         curDate = moment(curDate).add(1, 'day').toDate();
-        component.value = <MdCalendarPeriod>{
+        component.value = <MdeCalendarPeriod>{
           type: 'day',
           startDate: curDate,
           endDate: curDate
@@ -107,14 +107,14 @@ describe('MdCalendar', () => {
 
   describe('year view', () => {
     it('should display the current year', (done: () => void) => {
-      let fixture = TestBed.createComponent(MdCalendarMonthViewTestComponent);
+      let fixture = TestBed.createComponent(MdeCalendarMonthViewTestComponent);
       fixture.detectChanges();
 
       fixture.whenStable().then(() => {
         fixture.detectChanges();
 
-        let calendarItem = fixture.debugElement.query(By.directive(MdCalendar));
-        let calendarRows = calendarItem.queryAll(By.css('.md-calendar-row'));
+        let calendarItem = fixture.debugElement.query(By.directive(MdeCalendar));
+        let calendarRows = calendarItem.queryAll(By.css('.mde-calendar-row'));
 
         let startDate = moment().startOf('year');
         let endDate = moment().endOf('year').add(1, 'day');
@@ -149,16 +149,16 @@ describe('MdCalendar', () => {
 });
 
 @Component({
-  selector: 'md-calendar-test-component',
-  template: `<md-calendar [(ngModel)]="model"></md-calendar>`
+  selector: 'mde-calendar-test-component',
+  template: `<mde-calendar [(ngModel)]="model"></mde-calendar>`
 })
-class MdCalendarBasicTestComponent {
-  model: MdCalendarPeriod;
+class MdeCalendarBasicTestComponent {
+  model: MdeCalendarPeriod;
 }
 
 @Component({
-  selector: 'md-calendar-test-component',
-  template: `<md-calendar view-mode="year"></md-calendar>`
+  selector: 'mde-calendar-test-component',
+  template: `<mde-calendar view-mode="year"></mde-calendar>`
 })
-class MdCalendarMonthViewTestComponent {
+class MdeCalendarMonthViewTestComponent {
 }

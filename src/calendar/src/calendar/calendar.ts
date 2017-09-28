@@ -9,7 +9,7 @@ const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default 
 
 export const MD_CALENDAR_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => MdCalendar),
+  useExisting: forwardRef(() => MdeCalendar),
   multi: true
 };
 
@@ -17,34 +17,34 @@ const weekDays: string[] = [
   '', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'
 ];
 
-export type MdCalendarViewMode = ('month' | 'year' | 'decade');
-export type MdCalendarPeriodType = ('day' | 'week' | 'month' | 'year');
-export type MdCalendarEntryType = ('day' | 'month' | 'year');
-export type MdCalendarWeekDay = (
+export type MdeCalendarViewMode = ('month' | 'year' | 'decade');
+export type MdeCalendarPeriodType = ('day' | 'week' | 'month' | 'year');
+export type MdeCalendarEntryType = ('day' | 'month' | 'year');
+export type MdeCalendarWeekDay = (
   'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 );
-export type MdCalendarEntrySelectedState = ('none' | 'partial' | 'full');
+export type MdeCalendarEntrySelectedState = ('none' | 'partial' | 'full');
 
-export class MdCalendarPeriod {
-  type: MdCalendarPeriodType;
+export class MdeCalendarPeriod {
+  type: MdeCalendarPeriodType;
   startDate: Date;
   endDate: Date;
 }
 
-export class MdCalendarChange {
-  source: MdCalendar;
-  period: MdCalendarPeriod | null;
+export class MdeCalendarChange {
+  source: MdeCalendar;
+  period: MdeCalendarPeriod | null;
 }
 
-export class MdCalendarEntry {
-  type: MdCalendarEntryType;
+export class MdeCalendarEntry {
+  type: MdeCalendarEntryType;
   date: Date;
-  selected: MdCalendarEntrySelectedState;
+  selected: MdeCalendarEntrySelectedState;
 
   constructor(params: {
-    type: MdCalendarEntryType,
+    type: MdeCalendarEntryType,
     date: Date,
-    selected: MdCalendarEntrySelectedState
+    selected: MdeCalendarEntrySelectedState
   }) {
     this.type = params.type;
     this.date = params.date;
@@ -77,12 +77,12 @@ export class MdCalendarEntry {
 
 @Component({
   moduleId: module.id,
-  selector: 'md-calendar',
+  selector: 'mde-calendar',
   templateUrl: 'calendar.html',
   styleUrls: ['calendar.css'],
   providers: [MD_CALENDAR_CONTROL_VALUE_ACCESSOR]
 })
-export class MdCalendar implements ControlValueAccessor {
+export class MdeCalendar implements ControlValueAccessor {
   private _viewDate: Date = new Date();
   private _viewMoment: moment.Moment = momentConstructor();
   private _viewHeader: string = '';
@@ -94,30 +94,30 @@ export class MdCalendar implements ControlValueAccessor {
   @Input('view-date')
   set viewDate(viewDate: Date) { this._setViewDate(viewDate); }
 
-  private _viewMode: MdCalendarViewMode = 'month';
+  private _viewMode: MdeCalendarViewMode = 'month';
 
-  get viewMode(): MdCalendarViewMode { return this._viewMode; }
+  get viewMode(): MdeCalendarViewMode { return this._viewMode; }
   @Input('view-mode')
-  set viewMode(viewMode: MdCalendarViewMode) {
+  set viewMode(viewMode: MdeCalendarViewMode) {
     this._viewMode = viewMode;
     this._buildCalendar();
   }
 
-  private _selectionMode: MdCalendarPeriodType = 'day';
+  private _selectionMode: MdeCalendarPeriodType = 'day';
 
-  get selectionMode(): MdCalendarPeriodType { return this._selectionMode; }
+  get selectionMode(): MdeCalendarPeriodType { return this._selectionMode; }
   @Input('selection-mode')
-  set selectionMode(selectionMode: MdCalendarPeriodType) {
+  set selectionMode(selectionMode: MdeCalendarPeriodType) {
     this._selectionMode = selectionMode;
   }
 
   private _startOfWeekDay: number = 1;
 
-  get startOfWeekDay(): MdCalendarWeekDay {
-    return <MdCalendarWeekDay>weekDays[this._startOfWeekDay];
+  get startOfWeekDay(): MdeCalendarWeekDay {
+    return <MdeCalendarWeekDay>weekDays[this._startOfWeekDay];
   }
   @Input('start-of-week-day')
-  set startOfWeekDay(weekDay: MdCalendarWeekDay) {
+  set startOfWeekDay(weekDay: MdeCalendarWeekDay) {
     this._startOfWeekDay = weekDays.indexOf(weekDay);
 
     (<any>moment).updateLocale(moment.locale(), { week: { dow: this._startOfWeekDay }});
@@ -137,11 +137,11 @@ export class MdCalendar implements ControlValueAccessor {
     this._isoMode = isoMode;
   }
 
-  private _change: EventEmitter<MdCalendarChange> = new EventEmitter<MdCalendarChange>();
-  @Output() change(): Observable<MdCalendarChange> { return this._change.asObservable(); }
+  private _change: EventEmitter<MdeCalendarChange> = new EventEmitter<MdeCalendarChange>();
+  @Output() change(): Observable<MdeCalendarChange> { return this._change.asObservable(); }
 
-  private _selectedPeriod: MdCalendarPeriod | null;
-  private set selectedPeriod(period: MdCalendarPeriod | null) {
+  private _selectedPeriod: MdeCalendarPeriod | null;
+  private set selectedPeriod(period: MdeCalendarPeriod | null) {
     this._selectedPeriod = period;
     this._change.emit({
       source: this,
@@ -150,19 +150,19 @@ export class MdCalendar implements ControlValueAccessor {
     this._refreshSelection();
   }
 
-  get value(): MdCalendarPeriod | null { return this._selectedPeriod; }
-  set value(period: MdCalendarPeriod | null) {
+  get value(): MdeCalendarPeriod | null { return this._selectedPeriod; }
+  set value(period: MdeCalendarPeriod | null) {
     if (period !== this._selectedPeriod) {
       this.selectedPeriod = period;
       this._onChangeCallback(period);
     }
   }
 
-  get calendarRows(): MdCalendarEntry[][] { return this._calendarRows; }
+  get calendarRows(): MdeCalendarEntry[][] { return this._calendarRows; }
   get viewHeader(): string { return this._viewHeader; }
   get weekDays(): string[] { return this._weekDays; }
 
-  private _calendarRows: MdCalendarEntry[][] = [];
+  private _calendarRows: MdeCalendarEntry[][] = [];
   private _weekDays: string[] = [];
 
   constructor() {
@@ -198,12 +198,12 @@ export class MdCalendar implements ControlValueAccessor {
     this._buildCalendar();
   }
 
-  selectEntry(entry: MdCalendarEntry): void {
+  selectEntry(entry: MdeCalendarEntry): void {
     if (!this._canSelectEntry(entry)) {
       return this._nextViewMode(entry);
     }
 
-    let newPeriod: MdCalendarPeriod | null = null;
+    let newPeriod: MdeCalendarPeriod | null = null;
     if (this._isEntrySelected(entry) == 'full') {
       newPeriod = null;
     } else if (this._selectionMode == 'day') {
@@ -276,12 +276,12 @@ export class MdCalendar implements ControlValueAccessor {
       .startOf('year')
       .year(firstYear);
 
-    let rows: MdCalendarEntry[][] = [];
+    let rows: MdeCalendarEntry[][] = [];
     for (let i = 0 ; i < 4 ; i ++) {
-      let row: MdCalendarEntry[] = [];
+      let row: MdeCalendarEntry[] = [];
       for (let j = 0 ; j < 3 ; j ++) {
         let date = new Date(curDate.toDate().valueOf());
-        let newEntry = new MdCalendarEntry({
+        let newEntry = new MdeCalendarEntry({
           type: 'year',
           date: date,
           selected: 'none'
@@ -301,12 +301,12 @@ export class MdCalendar implements ControlValueAccessor {
     let curDate: moment.Moment = momentConstructor(this.viewDate)
       .startOf('year');
 
-    let rows: MdCalendarEntry[][] = [];
+    let rows: MdeCalendarEntry[][] = [];
     for (let i = 0 ; i < 4 ; i ++) {
-      let row: MdCalendarEntry[] = [];
+      let row: MdeCalendarEntry[] = [];
       for (let j = 0 ; j < 3 ; j ++) {
         let date = new Date(curDate.toDate().valueOf());
-        let newEntry = new MdCalendarEntry({
+        let newEntry = new MdeCalendarEntry({
           type: 'month',
           date: date,
           selected: 'none'
@@ -361,13 +361,13 @@ export class MdCalendar implements ControlValueAccessor {
         .endOf('week');
     }
 
-    let rows: MdCalendarEntry[][] = [];
+    let rows: MdeCalendarEntry[][] = [];
     let curDate = momentConstructor(viewStartDate);
     while (curDate < viewEndDate) {
-      let row: MdCalendarEntry[] = [];
+      let row: MdeCalendarEntry[] = [];
       for (let i = 0 ; i < 7 ; i++) {
         let date = new Date(curDate.toDate().valueOf());
-        let newEntry: MdCalendarEntry = new MdCalendarEntry({
+        let newEntry: MdeCalendarEntry = new MdeCalendarEntry({
           type: 'day',
           date: date,
           selected: 'none'
@@ -392,11 +392,11 @@ export class MdCalendar implements ControlValueAccessor {
     this._weekDays = weekDayNames;
   }
 
-  private _periodOrder(entryType: MdCalendarPeriodType): number {
+  private _periodOrder(entryType: MdeCalendarPeriodType): number {
     return ['day', 'week', 'month', 'year'].indexOf(entryType);
   }
 
-  private _isEntrySelected(entry: MdCalendarEntry): MdCalendarEntrySelectedState {
+  private _isEntrySelected(entry: MdeCalendarEntry): MdeCalendarEntrySelectedState {
     if (this._selectedPeriod != null) {
       let selectionStart: moment.Moment = momentConstructor(this._selectedPeriod.startDate)
         .startOf('day');
@@ -431,7 +431,7 @@ export class MdCalendar implements ControlValueAccessor {
     }
   }
 
-  private _canSelectEntry(entry: MdCalendarEntry): boolean {
+  private _canSelectEntry(entry: MdeCalendarEntry): boolean {
     if (['day', 'week'].indexOf(this._selectionMode) >= 0 && entry.type != 'day') {
       return false;
     }
@@ -441,7 +441,7 @@ export class MdCalendar implements ControlValueAccessor {
     return true;
   }
 
-  private _nextViewMode(entry: MdCalendarEntry): void {
+  private _nextViewMode(entry: MdeCalendarEntry): void {
     if (this._viewMode == 'decade') {
       this._viewMode = 'year';
     } else if (this._viewMode == 'year') {
