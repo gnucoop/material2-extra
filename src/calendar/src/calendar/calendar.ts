@@ -127,6 +127,16 @@ export class MdCalendar implements ControlValueAccessor {
     }
   }
 
+  private _isoMode: Boolean = false;
+
+  get isoMode(): Boolean {
+    return this._isoMode;
+  }
+  @Input('iso-mode')
+  set isoMode(isoMode: Boolean) {
+    this._isoMode = isoMode;
+  }
+
   private _change: EventEmitter<MdCalendarChange> = new EventEmitter<MdCalendarChange>();
   @Output() change(): Observable<MdCalendarChange> { return this._change.asObservable(); }
 
@@ -314,13 +324,42 @@ export class MdCalendar implements ControlValueAccessor {
     this._viewHeader = momentConstructor(this._viewDate).format('MMM YYYY');
 
     this._buildMonthViewWeekDays();
+    let viewStartDate: moment.Moment;
+    let viewEndDate: moment.Moment;
 
-    let viewStartDate: moment.Moment = momentConstructor(this.viewDate)
-      .startOf('month')
-      .startOf('week');
-    let viewEndDate: moment.Moment = momentConstructor(this.viewDate)
-      .endOf('month')
-      .endOf('week');
+    if (this._isoMode) {
+      let momentDate = momentConstructor(this.viewDate);
+      let originalMonth = momentDate.month();
+      let startMonthCounter = 0;
+      let endMonthCounter = 0;
+
+      for (let i = 0; i < 8; i++) {
+        if (momentDate.startOf('month').isoWeekday(i).month() < originalMonth) {
+          startMonthCounter++;
+        }
+        if (momentDate.endOf('month').isoWeekday(i).month() > originalMonth) {
+          endMonthCounter++;
+        }
+      }
+      if (startMonthCounter > 3) {
+        viewStartDate = momentDate.startOf('month').isoWeekday(1).add('d', 7);
+      } else {
+        viewStartDate = momentDate.startOf('month').isoWeekday(1);
+      }
+      if (endMonthCounter > 3) {
+        viewEndDate = momentDate.endOf('month').isoWeek(7).subtract('d', 7);
+      } else {
+        viewEndDate = momentDate.endOf('month').isoWeek(7);
+      }
+
+    } else {
+      viewStartDate = momentConstructor(this.viewDate)
+        .startOf('month')
+        .startOf('week');
+      viewEndDate = momentConstructor(this.viewDate)
+        .endOf('month')
+        .endOf('week');
+    }
 
     let rows: MdCalendarEntry[][] = [];
     let curDate = momentConstructor(viewStartDate);
@@ -344,7 +383,7 @@ export class MdCalendar implements ControlValueAccessor {
   }
 
   private _buildMonthViewWeekDays(): void {
-    let curMoment = momentConstructor().startOf('week');
+    let curMoment = momentConstructor().startOf('week').isoWeekday(1);
     let weekDayNames: string[] = [];
     for (let i = 0 ; i < 7 ; i++) {
       weekDayNames.push(curMoment.format('dddd'));
