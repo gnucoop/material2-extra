@@ -1,7 +1,7 @@
 <div class="mde-calendar-header">
     <button (click)="prevPage()" md-mini-fab>&#8592;</button>
     <button (click)="previousViewMode()" md-button class="mde-calendar-header-title">
-        {{ viewHeader }}
+      {{ viewHeader }}
     </button>
     <button (click)="nextPage()" md-mini-fab>&#8594;</button>
 </div>
@@ -12,11 +12,11 @@
 </div>
 <div class="mde-calendar-row" *ngFor="let row of calendarRows">
     <button
-            md-raised-button
-            [class.mde-calendar-partial-selection]="entry.selected == 'partial'"
-            [color]="entry.selected != 'none' ? 'warn' : null"
-            (click)="selectEntry(entry)"
-            *ngFor="let entry of row">
-        {{ entry.toString() }}
+        md-raised-button
+        [class.mde-calendar-partial-selection]="entry.selected == 'partial'"
+        [color]="entry.selected != 'none' ? 'warn' : null"
+        (click)="selectEntry(entry)"
+        *ngFor="let entry of row">
+      {{ entry.toString() }}
     </button>
 </div>

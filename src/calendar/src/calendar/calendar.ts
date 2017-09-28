@@ -1,4 +1,6 @@
-import { Component, EventEmitter, forwardRef, Input, Output, OnInit } from '@angular/core';
+import {
+  AfterContentInit, Component, EventEmitter, forwardRef, Input, OnInit, Output
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
@@ -40,15 +42,25 @@ export class MdeCalendarEntry {
   type: MdeCalendarEntryType;
   date: Date;
   selected: MdeCalendarEntrySelectedState;
+  disabled = false;
+  highlight = false;
 
   constructor(params: {
     type: MdeCalendarEntryType,
     date: Date,
     selected: MdeCalendarEntrySelectedState
+    highlight?: boolean,
+    disabled?: boolean
   }) {
     this.type = params.type;
     this.date = params.date;
     this.selected = params.selected;
+    if (params.highlight !== undefined) {
+      this.highlight = params.highlight;
+    }
+    if (params.disabled !== undefined) {
+      this.disabled = params.disabled;
+    }
   }
 
   toString(): string {
@@ -82,17 +94,24 @@ export class MdeCalendarEntry {
   styleUrls: ['calendar.css'],
   providers: [MD_CALENDAR_CONTROL_VALUE_ACCESSOR]
 })
-export class MdeCalendar implements ControlValueAccessor, OnInit {
-  private _viewDate: Date = new Date();
-  private _viewMoment: moment.Moment = momentConstructor();
-  private _viewHeader: string = '';
-
-  private _onChangeCallback: (_: any) => void = (_: any) => { };
-  private _onTouchedCallback: () => void = () => { };
-
+export class MdeCalendar implements AfterContentInit, ControlValueAccessor, OnInit {
   get viewDate(): Date { return this._viewDate; }
   @Input('view-date')
   set viewDate(viewDate: Date) { this._setViewDate(viewDate); }
+
+  private _disabled = false;
+  get disabled(): boolean { return this._disabled; }
+  @Input()
+  set disabled(disabled: boolean) {
+    this._disabled = disabled != null && `${disabled}` !== 'false';
+  }
+
+  private _dateOnlyForDay = false;
+  get dateOnlyForDay(): boolean { return this._disabled; }
+  @Input()
+  set dateOnlyForDay(dateOnlyForDay: boolean) {
+    this._dateOnlyForDay = dateOnlyForDay != null && `${dateOnlyForDay}` !== 'false';
+  }
 
   private _viewMode: MdeCalendarViewMode = 'month';
 
@@ -111,7 +130,7 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
     this._selectionMode = selectionMode;
   }
 
-  private _startOfWeekDay: number = 1;
+  private _startOfWeekDay = 1;
 
   get startOfWeekDay(): MdeCalendarWeekDay {
     return <MdeCalendarWeekDay>weekDays[this._startOfWeekDay];
@@ -137,6 +156,24 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
     this._isoMode = isoMode;
   }
 
+  private _minDate: Date | null;
+  get minDate(): Date | null {
+    return this._minDate;
+  }
+  @Input()
+  set minDate(minDate: Date | null) {
+    this._minDate = minDate != null ? new Date(minDate.valueOf()) : null;
+  }
+
+  private _maxDate: Date | null;
+  get maxDate(): Date | null {
+    return this._maxDate;
+  }
+  @Input()
+  set maxDate(maxDate: Date | null) {
+    this._maxDate = maxDate != null ? new Date(maxDate.valueOf()) : null;
+  }
+
   private _change: EventEmitter<MdeCalendarChange> = new EventEmitter<MdeCalendarChange>();
   @Output() change(): Observable<MdeCalendarChange> {
     this._buildCalendar();
@@ -153,10 +190,25 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
     this._refreshSelection();
   }
 
-  get value(): MdeCalendarPeriod | null { return this._selectedPeriod; }
-  set value(period: MdeCalendarPeriod | null) {
-    if (period !== this._selectedPeriod) {
-      this.selectedPeriod = period;
+  get value(): MdeCalendarPeriod | Date | null {
+    if (this._dateOnlyForDay && this.selectionMode === 'day') {
+      return this._selectedPeriod != null ? this._selectedPeriod.startDate : null;
+    }
+    return this._selectedPeriod;
+  }
+  set value(period: MdeCalendarPeriod | Date | null) {
+    if (this._dateOnlyForDay && this.selectionMode === 'day') {
+      if (period instanceof Date &&
+          (this._selectedPeriod == null || period !== this._selectedPeriod.startDate)) {
+        this.selectedPeriod = {
+          type: 'day',
+          startDate: period,
+          endDate: period
+        };
+        this._onChangeCallback(period);
+      }
+    } else if (period instanceof Object && period !== this._selectedPeriod) {
+      this.selectedPeriod = <MdeCalendarPeriod>period;
       this._onChangeCallback(period);
     }
   }
@@ -165,12 +217,14 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
   get viewHeader(): string { return this._viewHeader; }
   get weekDays(): string[] { return this._weekDays; }
 
+  private _viewDate: Date = new Date();
+  private _viewMoment: moment.Moment = momentConstructor();
+  private _viewHeader: string = '';
+
   private _calendarRows: MdeCalendarEntry[][] = [];
   private _weekDays: string[] = [];
 
-  constructor() {
-    this._buildCalendar();
-  }
+  constructor() { }
 
   prevPage(): void {
     if (this._viewMode == 'month') {
@@ -236,10 +290,12 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
       let viewEndDate: moment.Moment;
 
       for (let i = 0; i < 8; i++) {
-        if (momentConstructor(this.viewDate).startOf('month').isoWeekday(i).month() < originalMonth) {
+        let startMonth = momentConstructor(this.viewDate).startOf('month').isoWeekday(i).month();
+        if (startMonth < originalMonth) {
           startMonthCounter++;
         }
-        if (momentConstructor(this.viewDate).endOf('month').isoWeekday(i).month() > originalMonth) {
+        let endMonth = momentConstructor(this.viewDate).endOf('month').isoWeekday(i).month();
+        if (endMonth > originalMonth) {
           endMonthCounter++;
         }
       }
@@ -249,7 +305,8 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
         viewStartDate = momentConstructor(this.viewDate).startOf('month').isoWeekday(1);
       }
       if (endMonthCounter > 3) {
-        viewEndDate = momentConstructor(this.viewDate).endOf('month').subtract('d', 7).isoWeekday(7);
+        viewEndDate = momentConstructor(this.viewDate).endOf('month').subtract('d', 7)
+          .isoWeekday(7);
       } else {
         viewEndDate = momentConstructor(this.viewDate).endOf('month').isoWeekday(7);
       }
@@ -278,8 +335,22 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any) {
-    this.selectedPeriod = value;
+    if (typeof value === 'string') {
+      value = momentConstructor(value).toDate();
+    }
+    this.value = value;
   }
+
+  ngOnInit(): void {
+    this._buildCalendar();
+  }
+
+  ngAfterContentInit(): void {
+    this._refreshSelection();
+  }
+
+  private _onChangeCallback: (_: any) => void = (_: any) => {};
+  private _onTouchedCallback: () => void = () => {};
 
   private _getMonthName(date: Date): string {
     return momentConstructor(date).format('MMM');
@@ -369,10 +440,12 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
       let endMonthCounter = 0;
 
       for (let i = 0; i < 8; i++) {
-        if (momentConstructor(this.viewDate).startOf('month').isoWeekday(i).month() < originalMonth) {
+        let startMonth = momentConstructor(this.viewDate).startOf('month').isoWeekday(i).month();
+        if (startMonth < originalMonth) {
           startMonthCounter++;
         }
-        if (momentConstructor(this.viewDate).endOf('month').isoWeekday(i).month() > originalMonth) {
+        let endMonth = momentConstructor(this.viewDate).endOf('month').isoWeekday(i).month();
+        if (endMonth > originalMonth) {
           endMonthCounter++;
         }
       }
@@ -397,15 +470,22 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
     }
 
     let rows: MdeCalendarEntry[][] = [];
+    let todayDate = momentConstructor();
     let curDate = momentConstructor(viewStartDate);
+    let minDate = this.minDate == null ? null : momentConstructor(this.minDate);
+    let maxDate = this.maxDate == null ? null : momentConstructor(this.maxDate);
     while (curDate < viewEndDate) {
       let row: MdeCalendarEntry[] = [];
       for (let i = 0; i < 7; i++) {
+        let disabled = (minDate != null && curDate.isBefore(minDate)) ||
+          (maxDate != null && curDate.isAfter(maxDate));
         let date = new Date(curDate.toDate().valueOf());
         let newEntry: MdeCalendarEntry = new MdeCalendarEntry({
           type: 'day',
           date: date,
-          selected: 'none'
+          selected: 'none',
+          highlight: todayDate.format('YYYY-MM-DD') === curDate.format('YYYY-MM-DD'),
+          disabled: disabled
         });
         newEntry.selected = this._isEntrySelected(newEntry);
         row.push(newEntry);
@@ -432,7 +512,10 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
   }
 
   private _isEntrySelected(entry: MdeCalendarEntry): MdeCalendarEntrySelectedState {
-    if (this._selectedPeriod != null) {
+    if (
+      this._selectedPeriod != null && this._selectedPeriod.startDate != null &&
+      this._selectedPeriod.endDate != null
+    ) {
       let selectionStart: moment.Moment = momentConstructor(this._selectedPeriod.startDate)
         .startOf('day');
       let selectionEnd: moment.Moment = momentConstructor(this._selectedPeriod.endDate)
@@ -485,9 +568,6 @@ export class MdeCalendar implements ControlValueAccessor, OnInit {
       return;
     }
     this._viewDate = entry.date;
-    this._buildCalendar();
-  }
-  ngOnInit() {
     this._buildCalendar();
   }
 }
