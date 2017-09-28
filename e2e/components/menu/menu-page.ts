@@ -51,7 +51,7 @@ export class MenuPage {
     });
   }
 
-  expectMenuLocation(el: ElementFinder, {x,y}: {x: number, y: number}) {
+  expectMenuLocation(el: ElementFinder, {x, y}: {x: number, y: number}) {
     el.getLocation().then((loc) => {
       expect(loc.x).toEqual(x);
       expect(loc.y).toEqual(y);

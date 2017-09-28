@@ -1,0 +1,7 @@
+<md-toolbar color="primary">
+  <span>Angular Material - Board</span>
+</md-toolbar>
+
+<div class="dashboard-content">
+  <payload-chart [data]="payloads | async" *ngIf="payloads | async"></payload-chart>
+</div>

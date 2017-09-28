@@ -1,0 +1,28 @@
+{
+  "name": "@material2-extra/masonry",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "Masonry layout built on Angular 2 Material",
+  "main": "./bundles/masonry.umd.js",
+  "module": "./esm5/masonry.es5.js",
+  "es2015": "./esm2015/masonry.js",
+  "typings": "./masonry.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnucoop/material2-extra.git"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "material design",
+    "components",
+    "masonry"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gnucoop/material2-extra/issues"
+  },
+  "homepage": "https://github.com/gnucoop/material2-extra#readme",
+  "peerDependencies": {
+    "@angular/material": "2.0.0-beta.8"
+  }
+}

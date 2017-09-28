@@ -1,56 +1,80 @@
 import {task, watch} from 'gulp';
-import * as path from 'path';
-import gulpMerge = require('merge2');
-import gulpRunSequence = require('run-sequence');
+import {join} from 'path';
+import {ngcBuildTask, copyTask, execNodeTask, serverTask} from '../util/task_helpers';
+import {copySync} from 'fs-extra';
+import {buildConfig, sequenceTask} from 'm2e-build-tools';
 
-import {SOURCE_ROOT, DIST_ROOT, PROJECT_ROOT} from '../constants';
-import {
-  tsBuildTask, sassBuildTask, copyTask, buildAppTask, execNodeTask,
-  vendorTask, sequenceTask, serverTask
-} from '../task_helpers';
+// There are no type definitions available for these imports.
+const gulpConnect = require('gulp-connect');
 
+const {outputDir, packagesDir, projectDir} = buildConfig;
 
-const appDir = path.join(SOURCE_ROOT, 'e2e-app');
-const outDir = DIST_ROOT;
-const PROTRACTOR_CONFIG_PATH = path.join(PROJECT_ROOT, 'test/protractor.conf.js');
+/** Path to the directory where all releases are created. */
+const releasesDir = join(outputDir, 'releases');
 
+const appDir = join(packagesDir, 'e2e-app');
+const outDir = join(outputDir, 'packages', 'e2e-app');
 
-task(':watch:e2eapp', () => {
-  watch(path.join(appDir, '**/*.ts'), [':build:e2eapp:ts']);
-  watch(path.join(appDir, '**/*.scss'), [':build:e2eapp:scss']);
-  watch(path.join(appDir, '**/*.html'), [':build:e2eapp:assets']);
-});
+const PROTRACTOR_CONFIG_PATH = join(projectDir, 'test/protractor.conf.js');
+const tsconfigPath = join(outDir, 'tsconfig-build.json');
 
+/** Glob that matches all files that need to be copied to the output folder. */
+const assetsGlob = join(appDir, '**/*.+(html|css|json|ts)');
 
-task(':build:e2eapp:vendor', vendorTask());
-task(':build:e2eapp:ts', [':build:components:ts'], tsBuildTask(appDir));
-task(':build:e2eapp:scss', [':build:components:scss'], sassBuildTask(outDir, appDir, []));
-task(':build:e2eapp:assets', copyTask(appDir, outDir));
-
-task('build:e2eapp', buildAppTask('e2eapp'));
-
-
-task(':test:protractor:setup', execNodeTask('protractor', 'webdriver-manager', ['update']));
-task(':test:protractor', execNodeTask('protractor', [PROTRACTOR_CONFIG_PATH]));
-// This task is used because, in some cases, protractor will block and not exit the process,
-// causing Travis to timeout. This task should always be used in a synchronous sequence as
-// the last step.
-task(':e2e:done', () => process.exit(0));
-
-let stopE2eServer: () => void = null;
-task(':serve:e2eapp', serverTask(false, (stream) => { stopE2eServer = () => stream.emit('kill') }));
-task(':serve:e2eapp:stop', () => stopE2eServer());
-task('serve:e2eapp', ['build:e2eapp'], sequenceTask([
-  ':inline-resources',
-  ':serve:e2eapp',
-  ':watch:components',
-]));
-
-
+/**
+ * Builds and serves the e2e-app and runs protractor once the e2e-app is ready.
+ */
 task('e2e', sequenceTask(
-  ':test:protractor:setup',
-  'serve:e2eapp',
+  [':test:protractor:setup', 'serve:e2eapp'],
   ':test:protractor',
   ':serve:e2eapp:stop',
-  ':e2e:done',
+  'screenshots',
 ));
+
+/** Task that builds the e2e-app in AOT mode. */
+task('e2e-app:build', sequenceTask(
+  'clean',
+  ['material:build-release', 'cdk:build-release'],
+  ['e2e-app:copy-release', 'e2e-app:copy-assets'],
+  'e2e-app:build-ts'
+));
+
+/** Task that copies all required assets to the output folder. */
+task('e2e-app:copy-assets', copyTask(assetsGlob, outDir));
+
+/** Task that builds the TypeScript sources. Those are compiled inside of the dist folder. */
+task('e2e-app:build-ts', ngcBuildTask(tsconfigPath));
+
+task(':watch:e2eapp', () => {
+  watch(join(appDir, '**/*.ts'), ['e2e-app:build']);
+  watch(join(appDir, '**/*.html'), ['e2e-app:copy-assets']);
+});
+
+/** Ensures that protractor and webdriver are set up to run. */
+task(':test:protractor:setup', execNodeTask('protractor', 'webdriver-manager', ['update']));
+
+/** Runs protractor tests (assumes that server is already running. */
+task(':test:protractor', execNodeTask('protractor', [PROTRACTOR_CONFIG_PATH]));
+
+/** Starts up the e2e app server. */
+task(':serve:e2eapp', serverTask(outDir, false));
+
+/** Terminates the e2e app server */
+task(':serve:e2eapp:stop', gulpConnect.serverClose);
+
+/** Builds and serves the e2e app. */
+task('serve:e2eapp', sequenceTask('e2e-app:build', ':serve:e2eapp'));
+
+/**
+ * [Watch task] Builds and serves e2e app, rebuilding whenever the sources change.
+ * This should only be used when running e2e tests locally.
+ */
+task('serve:e2eapp:watch', ['serve:e2eapp', 'material:watch', ':watch:e2eapp']);
+
+// As a workaround for https://github.com/angular/angular/issues/12249, we need to
+// copy the Material and CDK ESM output inside of the demo-app output.
+task('e2e-app:copy-release', () => {
+  copySync(join(releasesDir, 'material'), join(outDir, 'material'));
+  copySync(join(releasesDir, 'cdk'), join(outDir, 'cdk'));
+});
+

@@ -1,0 +1,30 @@
+{
+  "name": "@material2-extra/calendar",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "Calendar widget built on Angular 2 Material",
+  "main": "./bundles/calendar.umd.js",
+  "module": "./esm5/calendar.es5.js",
+  "es2015": "./esm2015/calendar.js",
+  "typings": "./calendar.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnucoop/material2-extra.git"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "material design",
+    "components",
+    "calendar",
+    "datepicker"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gnucoop/material2-extra/issues"
+  },
+  "homepage": "https://github.com/gnucoop/material2-extra#readme",
+  "peerDependencies": {
+    "@angular/material": "2.0.0-beta.8",
+    "moment": "^2.18.1"
+  }
+}

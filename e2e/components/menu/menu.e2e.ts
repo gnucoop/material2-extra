@@ -12,7 +12,7 @@ describe('menu', () => {
     page.trigger().click();
 
     page.expectMenuPresent(true);
-    expect(page.menu().getText()).toEqual("One\nTwo\nThree\nFour");
+    expect(page.menu().getText()).toEqual('One\nTwo\nThree\nFour');
   });
 
   it('should close menu when area outside menu is clicked', () => {
@@ -45,14 +45,14 @@ describe('menu', () => {
 
   it('should support multiple triggers opening the same menu', () => {
     page.triggerTwo().click();
-    expect(page.menu().getText()).toEqual("One\nTwo\nThree\nFour");
+    expect(page.menu().getText()).toEqual('One\nTwo\nThree\nFour');
     page.expectMenuAlignedWith(page.menu(), 'trigger-two');
 
     page.body().click();
     page.expectMenuPresent(false);
 
     page.trigger().click();
-    expect(page.menu().getText()).toEqual("One\nTwo\nThree\nFour");
+    expect(page.menu().getText()).toEqual('One\nTwo\nThree\nFour');
     page.expectMenuAlignedWith(page.menu(), 'trigger');
 
     page.body().click();

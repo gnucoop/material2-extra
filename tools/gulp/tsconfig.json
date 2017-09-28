@@ -1,25 +1,24 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "es2015"],
+    "noUnusedParameters": true,
+    "lib": ["es2015", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "outDir": "../../dist/tools/gulp",
+    "strictNullChecks": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
-    "outDir": "../../dist/gulp",
-    "rootDir": ".",
-    "sourceMap": true,
     "target": "es5",
-    "inlineSources": true,
-    "stripInternal": true,
-    "baseUrl": "",
-    "typeRoots": [
-      "../../node_modules/@types"
-    ],
     "types": [
       "node"
-    ]
-  }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "m2e-build-tools": ["../package-tools/index"]
+    }
+  },
+  "files": [
+    "gulpfile.ts"
+  ]
 }

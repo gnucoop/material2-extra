@@ -1,0 +1,21 @@
+/* Config file for the Angular Compiler. Paths need to be relative to the dist folder. */
+{
+  "extends": "./tsconfig-build",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "strictNullChecks": true,
+    "paths": {
+      "@material2-extra/calendar": ["./calendar"],
+      "@material2-extra/masonry": ["./masonry"]
+    }
+  },
+  "files": [
+    "./typings.d.ts",
+    "./demo-app-module.ts",
+    "./main-aot.ts"
+  ],
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": false
+  }
+}
