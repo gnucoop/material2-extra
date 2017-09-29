@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/gnucoop/material2-extra#readme",
   "peerDependencies": {
-    "@angular/material": "2.0.0-beta.8",
+    "@angular/material": "^2.0.0-beta.11",
     "moment": "^2.18.1"
   }
 }
