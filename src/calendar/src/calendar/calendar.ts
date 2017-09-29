@@ -199,7 +199,7 @@ export class MdeCalendar implements AfterContentInit, ControlValueAccessor, OnIn
   set value(period: MdeCalendarPeriod | Date | null) {
     if (this._dateOnlyForDay && this.selectionMode === 'day') {
       if (period instanceof Date &&
-          (this._selectedPeriod == null || period !== this._selectedPeriod.startDate)) {
+        (this._selectedPeriod == null || period !== this._selectedPeriod.startDate)) {
         this.selectedPeriod = {
           type: 'day',
           startDate: period,
@@ -269,11 +269,19 @@ export class MdeCalendar implements AfterContentInit, ControlValueAccessor, OnIn
         startDate: entry.date,
         endDate: entry.date
       };
-    } else if (this._selectionMode == 'week') {
+    } else if (this._selectionMode == 'week' && this._isoMode == false) {
       newPeriod = {
         type: 'week',
         startDate: new Date(momentConstructor(entry.date).startOf('week').toDate().valueOf()),
         endDate: new Date(momentConstructor(entry.date).endOf('week').toDate().valueOf())
+      };
+    } else if (this._selectionMode == 'week' && this._isoMode == true) {
+      newPeriod = {
+        type: 'week',
+        startDate: new Date(momentConstructor(entry.date).startOf('week')
+          .add('d', 1).toDate().valueOf()),
+        endDate: new Date(momentConstructor(entry.date).endOf('week')
+          .add('d', 1).toDate().valueOf())
       };
     } else if (this._selectionMode == 'month' && this._isoMode == false) {
       newPeriod = {
@@ -349,8 +357,8 @@ export class MdeCalendar implements AfterContentInit, ControlValueAccessor, OnIn
     this._refreshSelection();
   }
 
-  private _onChangeCallback: (_: any) => void = (_: any) => {};
-  private _onTouchedCallback: () => void = () => {};
+  private _onChangeCallback: (_: any) => void = (_: any) => { };
+  private _onTouchedCallback: () => void = () => { };
 
   private _getMonthName(date: Date): string {
     return momentConstructor(date).format('MMM');
