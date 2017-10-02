@@ -1,12 +1,12 @@
-md-masonry {
+mde-masonry {
   display: flex;
   flex-direction: column;
 
-  md-masonry-row {
+  mde-masonry-row {
     display: flex;
     flex-direction: row;
 
-    md-masonry-item {
+    mde-masonry-item {
       display: flex;
       flex: 1;
 

@@ -1,7 +1,7 @@
 $mde-calendar-row-height: 40px;
 $mde-calendar-height: $mde-calendar-row-height * 8;
 
-:host {
+mde-calendar {
   display: flex;
 
   box-sizing: border-box;

@@ -1,5 +1,6 @@
 import {
-  AfterContentInit, Component, EventEmitter, forwardRef, Input, OnInit, Output
+  AfterContentInit, Component, EventEmitter, forwardRef, Input, OnInit, Output,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -92,7 +93,8 @@ export class MdeCalendarEntry {
   selector: 'mde-calendar',
   templateUrl: 'calendar.html',
   styleUrls: ['calendar.css'],
-  providers: [MD_CALENDAR_CONTROL_VALUE_ACCESSOR]
+  providers: [MD_CALENDAR_CONTROL_VALUE_ACCESSOR],
+  encapsulation: ViewEncapsulation.None
 })
 export class MdeCalendar implements AfterContentInit, ControlValueAccessor, OnInit {
   get viewDate(): Date { return this._viewDate; }
