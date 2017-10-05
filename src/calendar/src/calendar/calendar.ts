@@ -506,7 +506,12 @@ export class MdeCalendar implements AfterContentInit, ControlValueAccessor, OnIn
   }
 
   private _buildMonthViewWeekDays(): void {
-    let curMoment = momentConstructor().startOf('week').isoWeekday(1);
+    let curMoment;
+    if (this._isoMode) {
+      curMoment = momentConstructor().startOf('week').isoWeekday(1);
+    } else {
+      curMoment = momentConstructor().startOf('week');
+    }
     let weekDayNames: string[] = [];
     for (let i = 0; i < 7; i++) {
       weekDayNames.push(curMoment.format('dddd'));
