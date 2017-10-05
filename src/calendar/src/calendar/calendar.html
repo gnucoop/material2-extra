@@ -1,9 +1,9 @@
 <div class="mde-calendar-header">
-    <button (click)="prevPage()" md-mini-fab>&#8592;</button>
-    <button (click)="previousViewMode()" md-button class="mde-calendar-header-title">
+    <button (click)="prevPage()" mat-mini-fab>&#8592;</button>
+    <button (click)="previousViewMode()" mat-button class="mde-calendar-header-title">
       {{ viewHeader }}
     </button>
-    <button (click)="nextPage()" md-mini-fab>&#8594;</button>
+    <button (click)="nextPage()" mat-mini-fab>&#8594;</button>
 </div>
 <div class="mde-calendar-row" *ngIf="viewMode == 'month'">
     <div *ngFor="let weekDay of weekDays">
@@ -12,7 +12,7 @@
 </div>
 <div class="mde-calendar-row" *ngFor="let row of calendarRows">
     <button
-        md-raised-button
+        mat-raised-button
         [class.mde-calendar-partial-selection]="entry.selected == 'partial'"
         [color]="entry.selected != 'none' ? 'warn' : null"
         (click)="selectEntry(entry)"
