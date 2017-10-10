@@ -14,29 +14,29 @@ export class Home {}
   selector: 'demo-app',
   providers: [],
   template: `
-    <md-sidenav-container class="demo-root" fullscreen>
-      <md-sidenav #start>
-        <md-nav-list>
-          <a md-list-item [routerLink]="['calendar']">Calendar</a>
-          <a md-list-item [routerLink]="['masonry']">Masonry</a>
-        </md-nav-list>
-        <button md-button (click)="start.close()">CLOSE</button>
-      </md-sidenav>
+    <mat-sidenav-container class="demo-root" fullscreen>
+      <mat-sidenav #start>
+        <mat-nav-list>
+          <a mat-list-item [routerLink]="['calendar']">Calendar</a>
+          <a mat-list-item [routerLink]="['masonry']">Masonry</a>
+        </mat-nav-list>
+        <button mat-button (click)="start.close()">CLOSE</button>
+      </mat-sidenav>
       <div>
-        <md-toolbar color="primary">
-          <button md-icon-button (click)="start.open()">
-            <md-icon class="md-24" >menu</md-icon>
+        <mat-toolbar color="primary">
+          <button mat-icon-button (click)="start.open()">
+            <mat-icon class="mat-24" >menu</mat-icon>
           </button>
           <div class="demo-toolbar">
             <h1>Dewco Core Demos</h1>
           </div>
-        </md-toolbar>
+        </mat-toolbar>
 
-        <div #root="$implicit" dir="ltr" class="demo-content">
+        <div #root="dir" dir="ltr" class="demo-content">
           <router-outlet></router-outlet>
         </div>
       </div>
-    </md-sidenav-container>
+    </mat-sidenav-container>
   `,
   styleUrls: ['demo-app.css'],
   encapsulation: ViewEncapsulation.None,

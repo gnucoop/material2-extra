@@ -5,7 +5,8 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
-  MdButtonModule, MdIconModule, MdListModule, MdSidenavModule, MdToolbarModule
+  MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule,
+  MATERIAL_COMPATIBILITY_MODE
 } from '@angular/material';
 
 import { MdeCalendarModule } from '@material2-extra/calendar';
@@ -25,11 +26,11 @@ import { MasonryDemo } from './masonry/masonry-demo';
     RouterModule.forRoot(DEMO_APP_ROUTES),
     BrowserAnimationsModule,
 
-    MdButtonModule,
-    MdIconModule,
-    MdListModule,
-    MdSidenavModule,
-    MdToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule,
 
     MdeCalendarModule,
     MdeMasonryModule
@@ -42,6 +43,9 @@ import { MasonryDemo } from './masonry/masonry-demo';
   ],
   entryComponents: [
     DemoApp
+  ],
+  providers: [
+    {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}
   ]
 })
 export class DemoAppModule {
