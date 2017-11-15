@@ -4,8 +4,10 @@ import {join} from 'path';
 import {task} from 'gulp';
 import {execTask} from '../util/task_helpers';
 import {buildConfig, sequenceTask} from 'm2e-build-tools';
-import {yellow, green, red, grey} from 'chalk';
+import {default as chalk} from 'chalk';
 import * as minimist from 'minimist';
+
+const yellow = chalk.yellow, green = chalk.green, red = chalk.red, grey = chalk.grey;
 
 /** Packages that will be published to NPM by the release task. */
 export const releasePackages = [

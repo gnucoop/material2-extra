@@ -1,13 +1,13 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MdButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material';
 
 import { MdeCalendar } from './calendar/index';
 
 
 @NgModule({
-  imports: [CommonModule, MdButtonModule],
+  imports: [CommonModule, MatButtonModule],
   exports: [MdeCalendar],
   declarations: [MdeCalendar],
   providers: []

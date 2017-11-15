@@ -58,7 +58,7 @@ function updateResult(database: firebase.database.Database, prNumber: string, re
 function getPullRequestRef(database: firebase.database.Database | firebaseAdmin.database.Database,
                            prNumber: string) {
   let secureToken = getSecureToken();
-  return database.ref(FIREBASE_REPORT).child(prNumber).child(secureToken);
+  return (<any>database.ref(FIREBASE_REPORT)).child(prNumber).child(secureToken);
 }
 
 function updateTravis(database: firebase.database.Database,

@@ -2,7 +2,7 @@ import {task} from 'gulp';
 import {execNodeTask} from '../util/task_helpers';
 import {join} from 'path';
 import {m2ePackages, buildConfig, sequenceTask} from 'm2e-build-tools';
-import {red} from 'chalk';
+import {default as chalk} from 'chalk';
 
 // These types lack of type definitions
 const madge = require('madge');
@@ -40,7 +40,7 @@ task('madge', m2ePackages.map(p => `${p}:clean-build`), () => {
 
     if (circularModules.length) {
       console.error();
-      console.error(red(`Madge found modules with circular dependencies.`));
+      console.error(chalk.red(`Madge found modules with circular dependencies.`));
       console.error(formatMadgeCircularModules(circularModules));
       console.error();
     }

@@ -1,6 +1,5 @@
 import {task, watch, src, dest} from 'gulp';
 import {join} from 'path';
-import {main as tsc} from '@angular/tsc-wrapped';
 import {buildConfig} from '../build-config';
 import {composeRelease} from '../build-release';
 import {inlineResourcesForDirectory} from '../inline-resources';

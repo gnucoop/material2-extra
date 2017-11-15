@@ -1,7 +1,7 @@
 import {task} from 'gulp';
 import {readFileSync, existsSync} from 'fs';
 import {join} from 'path';
-import {green, red} from 'chalk';
+import {default as chalk} from 'chalk';
 import {releasePackages} from './publish';
 import {sync as glob} from 'glob';
 import {buildConfig, sequenceTask} from 'm2e-build-tools';
@@ -24,14 +24,14 @@ task('validate-release:check-bundles', () => {
     .map((failures, index) => ({failures, packageName: releasePackages[index]}));
 
   releaseFailures.forEach(({failures, packageName}) => {
-    failures.forEach(failure => console.error(red(`Failure (${packageName}): ${failure}`)));
+    failures.forEach(failure => console.error(chalk.red(`Failure (${packageName}): ${failure}`)));
   });
 
   if (releaseFailures.some(({failures}) => failures.length > 0)) {
     // Throw an error to notify Gulp about the failures that have been detected.
     throw 'Release output is not valid and not ready for being released.';
   } else {
-    console.log(green('Release output has been checked and everything looks fine.'));
+    console.log(chalk.green('Release output has been checked and everything looks fine.'));
   }
 });
 
